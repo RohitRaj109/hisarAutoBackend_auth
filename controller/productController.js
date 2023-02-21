@@ -1,4 +1,5 @@
 import Product from '../models/Products.js';
+import fileUpload from 'express-fileupload';
 import cloudinary  from 'cloudinary'
 class ProductController {
    static imageUpload = async (req,res,next)=>{
