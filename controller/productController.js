@@ -8,13 +8,7 @@ cloudinary.config({
     secure: true
   });
 class ProductController {
-   static imageUpload = async (req,res,next)=>{
-    console.log(req)
-    const file= req.files.user_file;
-    cloudinary.uploader.upload(file.tempFilePath,(err,result)=>{
-        console.log(result)
-        res.send({data:{url:result.url,secure_url:result.secure_url,success:true,status:200}})
-    })}
+
     static Product = async (req,res)=>{ 
         const product = new Product({
             image:req.body.image,
