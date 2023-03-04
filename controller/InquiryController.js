@@ -39,7 +39,6 @@ class InquiryController {
         res.status(500).json({success:false});
     }
     res.send(inquiry)
-   
 }
 }
 export default InquiryController
