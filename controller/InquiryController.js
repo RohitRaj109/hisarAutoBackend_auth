@@ -25,11 +25,11 @@ class InquiryController {
         createdAt:new Date().getTime()
     })
     inquiry.save().then((createInquiry)=>{
-        res.status(200).json({data:createInquiry})
+        res.status(200).json({data:createInquiry,success:true,message:"successfully send"})
     }).catch((error)=>{
         res.status(500).json({
-            error: error,
-            success:false
+            success:false,
+            message:error
         })
     })
 }
@@ -38,7 +38,7 @@ class InquiryController {
     if(!inquiry){
         res.status(500).json({success:false});
     }
-    res.send(inquiry)
+    res.status(200).send({data:inquiry,success:true})
 }
 }
 export default InquiryController

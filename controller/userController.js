@@ -9,7 +9,7 @@ class UserController {
         const {name,email,phone, qualification,course, mode,address, dateOfJoining, password, password_confirmation,tc} = req.body
         const user = await UserModel.findOne({email:email})
         if(user){
-            res.send({"status":"falied", "message":"email already exist"})
+            res.send({"success":false, "message":"email already exist"})
         }else{
             if(name && email && password && password_confirmation,tc){
                 if(password === password_confirmation){
@@ -32,15 +32,15 @@ class UserController {
                     const saved_user = await UserModel.findOne({email:email})
                     //generate jwt token
                     const token = jwt.sign({userID:saved_user._id},process.env.JWT_SECRET_KEY,{expiresIn:'5d'})
-                    res.status(200).send({'success':true,token:token})
+                    res.status(200).send({'success':true,message:"Registration successfully complited",token:token})
                   }catch(err){
-                    res.send({"status":"failed","message":err})
+                    res.send({success:false,"message":err})
                   }
                 }else{
-                    res.send({"status":"failed","message":"password & confirm passoword doesn't match "})
+                    res.send({success:false,"message":"password & confirm passoword doesn't match "})
                 }
             }else{
-                res.send({"status":"failed","message":"all fields are required" })
+                res.send({success:false,"message":"all fields are required" })
             }
         }
     }
@@ -57,19 +57,19 @@ class UserController {
                     //generate jwt token
                     const token = jwt.sign({userID:user._id},process.env.JWT_SECRET_KEY,{expiresIn:'5d'})
                    
-                        res.send({status:'success',messge:'login success',token:token})
+                        res.send({success:true,message:'login success',token:token})
                     }else{
-                        res.send({status:'failed',message:'email or password is wrong'})
+                        res.send({success:false,message:'email or password is wrong'})
                     }
                 }else{
-                    res.send({status:'failed',message:'you are not registered with us'})
+                    res.send({success:false,message:'you are not registered with us'})
                 }
             }else{
-                res.send({status:'failed',message:'all fields are required'})
+                res.send({success:false,message:'all fields are required'})
             } 
          }catch(err){
             
-            res.send({status:'failed',message:'unable to login'})
+            res.send({success:false,message:'unable to login'})
          }
     }
     static changeUserPassword = async (req,res)=>{
@@ -80,12 +80,12 @@ class UserController {
                 const hashPassword = await bcrypt.hash(password,salt);
                 //console.log(req.user._id)
                 await UserModel.findByIdAndUpdate(req.user._id,{$set: {password:hashPassword}})
-                res.send({status:'success',message:'password change successfully'})
+                res.send({status:'success', success:true,message:'password change successfully'})
             }else{
-                res.send({status:'failed',message:'both password not matched'})
+                res.send({status:'failed',success:false, message:'both password not matched'})
             }
         }else{
-            res.send({status:'failed',message:'not matched'})
+            res.send({status:'failed',success:false,message:'not matched'})
         }
     }
     static loggedUser = async (req,res)=>{
@@ -109,12 +109,12 @@ class UserController {
                                 subject:'Hinsar-HAPL-Reset password link',
                                 html:`<a href=${link}> Click Here</a> to reset your password`
                                })
-                res.send({status:'success',info:info,message:'passowrd reset email send..please check your email',link:link})
+                res.send({status:'success',info:info,success:true, message:'passowrd reset email send..please check your email',link:link})
             }else{
-                res.send({status:'failed',message:'email does not exist'});
+                res.send({status:'failed', success:false,message:'email does not exist'});
             }
         }else{
-            res.send({status:'failed',message:'email is required'})
+            res.send({status:'failed',success:false,message:'email is required'})
         }
     }
     static userPasswordReset=async(req,res) =>{
@@ -130,22 +130,20 @@ class UserController {
                     const newHashPassword = await bcrypt.hash(password,salt)
                     await UserModel.findByIdAndUpdate(user._id, {$set:
                     {password:newHashPassword}})
-                    res.send({status:'success',message:'password reset successfully'})
+                    res.send({status:'success',success:true,message:'password reset successfully'})
                 }else{
-                    res.send({'status':'failed',message:'password does not match'})
+                    res.send({'status':'failed', success:false,message:'password does not match'})
                 }
             }else{
-                res.send({status:'failed',message:'all fields are required'})
+                res.send({status:'failed',success:false,message:'all fields are required'})
             }
         } catch(err){
-            res.send({'status':'failed',message:'invalid token'})
+            res.send({'status':'failed',success:false,message:'invalid token'})
         }
     }
     static userConnect = async (req,res)=>{
         const {name,email,phone,description} = req.body
-       
             if(name && email && phone && description){
-              
                   try{
                     const doc = new ConnectModel({
                         name:name,
@@ -158,14 +156,11 @@ class UserController {
                     //generate jwt token
                     res.status(200).send({'success':true,saved_query,message:'query send successfully'})
                   }catch(err){
-                    res.send({"status":"failed","message":err})
-                  }
-                
+                    res.send({"status":"failed",success:false,"message":err})
+                  }   
             }else{
-                res.send({"status":"failed","message":"all fields are required" })
+                res.send({"status":"failed",success:false,"message":"all fields are required" })
             }
-        
     }
 }
-
 export default UserController

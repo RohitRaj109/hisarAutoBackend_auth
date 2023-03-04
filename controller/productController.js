@@ -8,7 +8,6 @@ cloudinary.config({
     secure: true
   });
 class ProductController {
-
     static Product = async (req,res)=>{ 
         const product = new Product({
             image:req.body.image,
@@ -22,20 +21,19 @@ class ProductController {
             createdAt:new Date().getTime()
         })
         product.save().then((createdProduct)=>{
-            res.status(200).json(createdProduct)
+            res.status(200).json({data:createdProduct,success:true})
         }).catch((error)=>{
             res.status(500).json({
                 error: error,
                 success:false
-            })
+       })
     })}
     static getProducts = async (req,res,next)=>{ //api+'/products'
         const products = await Product.find()
         if(!products){
             res.status(500).json({success:false});
         }
-        res.send(products)
+        res.status(200).send({data:products,success:true})
     }
-
 }
 export default ProductController
