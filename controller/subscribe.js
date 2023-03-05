@@ -6,7 +6,7 @@ class SubscribeController{
             createdAt:new Date().getTime()
         })
         subscribes.save().then((createSubscription)=>{
-            res.status(200).json({data:createSubscription,emailId:req.body.emailId, success:true})
+            res.status(200).json({data:createSubscription,message:"Now you are subscribed", success:true})
         }).catch((error)=>{
             res.status(500).json({
                 error: error,
