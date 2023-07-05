@@ -68,15 +68,15 @@ class ProductController {
     static delete = async (req, res, next) => {
 
         const { id } = req.params.id;
-        const product = await Product.findById(req.body.id);
+        const product = await Product.findById(id);
         console.log(product)
         if (!product) {
             return res.status(404).send({
-                message: "Product not found with id " + req.body.id,
+                message: "Product not found with id " + id,
             });
         }
 
-        const result = await Product.deleteOne({ _id: req.body.id });
+        const result = await Product.deleteOne({ _id: id });
 
         if (result.deletedCount === 1) {
             res.send({ message: "Product deleted successfully!" });
