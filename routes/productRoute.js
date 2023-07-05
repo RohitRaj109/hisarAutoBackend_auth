@@ -11,4 +11,6 @@ router.get(`/products`,ProductController.getProducts)
 router.post('/cart',Cart.addCart)
 router.get('/cart',Cart.getCart)
 router.post('/buy',Cart.buyProduct)
+router.patch('/update/:id', ProductController.update);
+router.delete('/delete/:id',ProductController.delete);
 export default router

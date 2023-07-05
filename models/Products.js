@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 const productSchema =mongoose.Schema({
+    // _id:String,
     image:String,
     images:Array,
     title:String,
@@ -16,5 +17,5 @@ const productSchema =mongoose.Schema({
     },
     createdAt:Number
 })
-const Product = mongoose.model('Product',productSchema)
+const Product = mongoose.model('Products',productSchema)
 export default Product
