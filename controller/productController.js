@@ -43,21 +43,22 @@ class ProductController {
                 message: "Product not found with id " + id,
             });
         }
-
         const updatedProduct = {
-            image: req.body.image || product.image,
-            images: req.body.images || product.images,
-            title: req.body.title || product.title,
-            contactNo: req.body.contactNo || product.contactNo,
-            emailId: req.body.emailId || product.emailId,
-            description: req.body.description || product.description,
-            richDescription: req.body.richDescription || product.richDescription,
-            countInStock: req.body.countInStock || product.countInStock,
+            image: req.body.image ,
+            images: req.body.images ,
+            title: req.body.title ,
+            contactNo: req.body.contactNo,
+            emailId: req.body.emailId ,
+            description: req.body.description ,
+            richDescription: req.body.richDescription ,
+            countInStock: req.body.countInStock ,
             createdAt: new Date().getTime()
         };
+       
 
         let product = await Product.updateOne({ _id: req.params.id }, { ...updatedProduct });
-
+        console.log(product)
+        if(product)
         res.send(
             {
                 message: "Product updated successfully!",
